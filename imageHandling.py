@@ -35,7 +35,7 @@ def pixilizeImage(convertedImage, palette, pixelSize, changeBkg = True, bkgColor
     #convert image diminsions to be divisible by pixel size
     convertedImage = convertedImage.resize((int(convertedImage.size[0]/pixelSize), int(convertedImage.size[1]/pixelSize)), Image.NEAREST)
     convertedImage = convertedImage.resize((int(convertedImage.size[0]*pixelSize), int(convertedImage.size[1]*pixelSize)), Image.NEAREST)
-    
+
     pixel = convertedImage.load()
     for i in range(0, convertedImage.size[0], pixelSize):
         for j in range(0, convertedImage.size[1], pixelSize):

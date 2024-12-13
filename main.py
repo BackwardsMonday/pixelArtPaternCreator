@@ -59,7 +59,8 @@ def fileHandeling():
         
         with Image.open(filename) as imFile:
             palettedIm = imHand.quantizeToPalette(imFile, imPalette)
-            pixeledIm = imHand.pixilizeImage(palettedIm)
+            palettedIm = palettedIm.convert("RGB")
+            pixeledIm = imHand.pixilizeImage(palettedIm, palette, 20)
             pixeledIm.save("outputs/webTest.png")
         return "secssues"
         
