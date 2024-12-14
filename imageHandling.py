@@ -69,8 +69,6 @@ def pixilizeImage(image, palette, pixelSize, changeBkg = True, bkgColor = (255,2
 
 def addPixelGrid(image, pixelSize, smallGridColor = (100, 100, 100), bigGrid = True, bigGridColor = (0,0,0), bigGridSize=10):
     pixel = image.load()
-    image = image.resize((int(image.size[0]/pixelSize), int(image.size[1]/pixelSize)), Image.NEAREST)
-    image = image.resize((int(image.size[0]*pixelSize), int(image.size[1]*pixelSize)), Image.NEAREST)
 
     for i in range(0, image.size[0], pixelSize):
         for j in range(0, image.size[1], pixelSize):
