@@ -31,8 +31,9 @@ def quantizeToPalette(silf, palette, dither=False):
     except AttributeError:
         return silf._makeself(im)
     
-def pixilizeImage(convertedImage, palette, pixelSize, changeBkg = True, bkgColor = (255,255,255), grayThreshold = 100, gray = (149,145,140)):
+def pixilizeImage(image, palette, pixelSize, changeBkg = True, bkgColor = (255,255,255), grayThreshold = 100, gray = (149,145,140)):
     #convert image diminsions to be divisible by pixel size
+    convertedImage = image
     convertedImage = convertedImage.resize((int(convertedImage.size[0]/pixelSize), int(convertedImage.size[1]/pixelSize)), Image.NEAREST)
     convertedImage = convertedImage.resize((int(convertedImage.size[0]*pixelSize), int(convertedImage.size[1]*pixelSize)), Image.NEAREST)
 
@@ -66,5 +67,22 @@ def pixilizeImage(convertedImage, palette, pixelSize, changeBkg = True, bkgColor
                     pixel[i+x,j+y] = setColor
     return convertedImage
 
-            
+def addPixelGrid(image, pixelSize, smallGridColor = (100, 100, 100), bigGrid = True, bigGridColor = (0,0,0), bigGridSize=10):
+    pixel = image.load()
+    image = image.resize((int(image.size[0]/pixelSize), int(image.size[1]/pixelSize)), Image.NEAREST)
+    image = image.resize((int(image.size[0]*pixelSize), int(image.size[1]*pixelSize)), Image.NEAREST)
+
+    for i in range(0, image.size[0], pixelSize):
+        for j in range(0, image.size[1], pixelSize):
+            for r in range(pixelSize):
+                pixel[i+r,j] = smallGridColor
+                pixel[i,j+r] = smallGridColor
+    if bigGrid:
+        for i in range(0,image.size[0],pixelSize*bigGridSize):
+            for r in range(image.size[1]):
+                pixel[i,r] = bigGridColor
+        for j in range(0,image.size[1],pixelSize*bigGridSize):
+            for r in range(image.size[0]):
+                pixel[r,j] = bigGridColor
+    return image
             
