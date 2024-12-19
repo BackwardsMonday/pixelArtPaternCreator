@@ -1,9 +1,10 @@
-from flask import Flask, redirect, url_for, request, render_template, flash
+from flask import Flask, redirect, url_for, request, render_template, url_for
 import imageHandling as imHand
 from PIL import Image
 from PIL import ImageDraw 
 from PIL import ImageFont
 from werkzeug.utils import secure_filename
+import time
 import os
 app = Flask(__name__)
 
@@ -57,14 +58,15 @@ def fileHandeling():
         file.save(os.path.join(UPLOAD_FOLDER, filename))
         file.close()
         
-        with Image.open(filename) as imFile:
+        with Image.open(os.path.join(UPLOAD_FOLDER, filename)) as imFile:
             palettedIm = imHand.quantizeToPalette(imFile, imPalette)
             palettedIm = palettedIm.convert("RGB")
-            palettedIm.save("outputs/palettedIm.png")
-            pixeledIm = imHand.pixilizeImage(palettedIm, palette, 20,changeBkg=False)
+            palettedIm.save("static/palettedIm.png")
+            pixeledIm = imHand.pixilizeImage(palettedIm, palette, 20, changeBkg=False)
             pixeledIm = imHand.addPixelGrid(pixeledIm, 20)
-            pixeledIm.save("outputs/webTest.png")
-        return "secssues"
+            pixImName = f"webTest{time.time()}.png"
+            pixeledIm.save(os.path.join("./static",pixImName))
+        return render_template("result.html", resultIm=pixImName)
         
         
     
